@@ -101,45 +101,49 @@ class _MyAppState extends State<MyApp> {
             ],
           ),
         ),
-        body: Center(
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 22,
-              ),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(
-                    'Recomendados',
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    'Ver todas',
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w400),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Wrap(
-                alignment: WrapAlignment.start,
-                children: [
-                  for (var produto in produtos)
-                    ProductCard(
-                      nome: produto['nome'],
-                      preco: produto['preco'],
+        body: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 22,
+                ),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text(
+                      'Recomendados',
+                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                     ),
-                ],
-              ),
-            ],
+                    Text(
+                      'Ver todas',
+                      style: TextStyle(fontSize: 17, fontWeight: FontWeight.w400),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Wrap(
+                  alignment: WrapAlignment.start,
+                  children: [
+                    for (var produto in produtos)
+                      ProductCard(
+                        nome: produto['nome'],
+                        preco: produto['preco'],
+                      ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 }
+
+
 
 class ProductCard extends StatelessWidget {
   const ProductCard({super.key, required this.nome, required this.preco});
@@ -151,16 +155,16 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 115,
-      height: 150,
+      height: 180,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           SizedBox(
-            width: 80, // Largura desejada
-            height: 115, // Altura desejada
+            width: 70,
+            height: 115,
             child: Image.asset(
               'assets/images/notebook.jpg',
-              fit: BoxFit.cover, // Aplica o efeito de cobertura
+              fit: BoxFit.cover,
             ),
           ),
           Text(nome),
