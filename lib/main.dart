@@ -122,7 +122,7 @@ class _MyAppState extends State<MyApp> {
                   ],
                 ),
                 const SizedBox(
-                  height: 15,
+                  height: 22,
                 ),
                 Wrap(
                   alignment: WrapAlignment.start,
@@ -155,12 +155,11 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 115,
-      height: 180,
+      height: 170,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           SizedBox(
-            width: 70,
+            width: 110,
             height: 115,
             child: Image.asset(
               'assets/images/notebook.jpg',
