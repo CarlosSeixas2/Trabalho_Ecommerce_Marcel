@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -14,30 +15,35 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   List<Map<String, dynamic>> produtos = [
     {
+      "id": 1,
       "nome": "Notebook",
       "descricao": "Notebook ultrafino com SSD",
       "preco": 899.99,
       "quantidade": 5
     },
     {
+      "id": 2,
       "nome": "Mouse",
       "descricao": "Mouse óptico sem fio",
       "preco": 19.99,
       "quantidade": 50
     },
     {
+      "id": 3,
       "nome": "Teclado",
       "descricao": "Teclado mecânico RGB",
       "preco": 59.99,
       "quantidade": 30
     },
     {
+      "id": 4,
       "nome": "Monitor",
       "descricao": "Monitor LED 24 polegadas",
       "preco": 199.99,
       "quantidade": 20
     },
     {
+      "id": 5,
       "nome": "Placa de Vídeo RTX 4050",
       "descricao": "Placa de vídeo NVIDIA GeForce RTX 3060",
       "preco": 499.99,
@@ -159,7 +165,7 @@ class _MyAppState extends State<MyApp> {
                         ),
                       ),
                       Text(
-                        'Ver todas',
+                        'Ver todos',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -182,9 +188,11 @@ class _MyAppState extends State<MyApp> {
                         Row(
                           children: [
                             ProductCard(
+                              id: produto['id'],
                               nome: produto['nome'],
                               preco: produto['preco'],
                             ),
+                          if (produtos.last != produto)
                             const SizedBox(width: 25),
                           ],
                         )
@@ -195,14 +203,14 @@ class _MyAppState extends State<MyApp> {
                 const SizedBox(
                   height: 30,
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(
+                Padding(
+                  padding: const EdgeInsets.symmetric(
                     horizontal: 15,
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         'Periféricos',
                         style: TextStyle(
                           fontSize: 26,
@@ -210,12 +218,17 @@ class _MyAppState extends State<MyApp> {
                           color: Color(0xffFAFAFA),
                         ),
                       ),
-                      Text(
-                        'Ver todas',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xff01FC80),
+                      GestureDetector(
+                        onTap: () {
+                          print('Ver todos os periféricos');
+                        },
+                        child: const Text(
+                          'Ver todos',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xff01FC80),
+                          ),
                         ),
                       ),
                     ],
@@ -234,10 +247,12 @@ class _MyAppState extends State<MyApp> {
                         Row(
                           children: [
                             ProductCard(
+                              id: produto['id'],
                               nome: produto['nome'],
                               preco: produto['preco'],
                             ),
-                            const SizedBox(width: 25),
+                            if (produtos.last != produto)
+                              const SizedBox(width: 25),
                           ],
                         )
                     ],
@@ -253,8 +268,9 @@ class _MyAppState extends State<MyApp> {
 }
 
 class ProductCard extends StatelessWidget {
-  const ProductCard({super.key, required this.nome, required this.preco});
+  const ProductCard({super.key, required this.id, required this.nome, required this.preco});
 
+  final int id;
   final String nome;
   final double preco;
 
@@ -262,70 +278,82 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 140,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 140,
-            height: 140,
-            child: Container(
-              decoration: BoxDecoration(
-                image: const DecorationImage(
-                  image: AssetImage('assets/images/notebook.jpg'),
-                  fit: BoxFit.cover,
-                ),
-                border: Border.all(
-                  color: const Color(0xff27272A),
-                  width: 1,
-                ),
-                borderRadius: BorderRadius.circular(10),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SecondPage(
+                idProduto: id,
               ),
             ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 5,
-              ),
-
-              const Text(
-                "Apenas 5 unidades",
-                style: TextStyle(
-                  color: Color(0xffA1A1AA),
-                  fontSize: 8,
-                  fontWeight: FontWeight.w500,
+          );
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: 140,
+              height: 140,
+              child: Container(
+                decoration: BoxDecoration(
+                  image: const DecorationImage(
+                    image: AssetImage('assets/images/notebook.jpg'),
+                    fit: BoxFit.cover,
+                  ),
+                  border: Border.all(
+                    color: const Color(0xff27272A),
+                    width: 1,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
-
-              const SizedBox(
-                height: 5,
-              ),
-
-              Text(
-                nome,
-                style: const TextStyle(
-                  color: Color(0xffFAFAFA),
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 5,
                 ),
-              ),
-              
-              const SizedBox(
-                height: 5,
-              ),
 
-              Text(
-                'R\$ ${preco.toStringAsFixed(2).replaceAll('.', ',')}',
-                style: const TextStyle(
-                  color: Color(0xff01FC80),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
+                const Text(
+                  "Apenas 5 unidades",
+                  style: TextStyle(
+                    color: Color(0xffA1A1AA),
+                    fontSize: 8,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+
+                const SizedBox(
+                  height: 5,
+                ),
+
+                Text(
+                  nome,
+                  style: const TextStyle(
+                    color: Color(0xffFAFAFA),
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+
+                const SizedBox(
+                  height: 5,
+                ),
+
+                Text(
+                  'R\$ ${preco.toStringAsFixed(2).replaceAll('.', ',')}',
+                  style: const TextStyle(
+                    color: Color(0xff01FC80),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -366,6 +394,30 @@ class CategoryCard extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class SecondPage extends StatelessWidget {
+  const SecondPage({super.key, required this.idProduto});
+
+  final int idProduto;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Produto $idProduto'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            // Voltar para a pÃ¡gina anterior
+            Navigator.pop(context);
+          },
+          child: Text('Voltar'),
         ),
       ),
     );
