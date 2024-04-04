@@ -3,7 +3,7 @@ List<Map<String, dynamic>> produtos = [
     "id": 1,
     "nome": "Notebook",
     "descricao": "Notebook ultrafino com SSD",
-    "preco": 899.99,
+    "preco": 999.99,
     "quantidade": 5
   },
   {
