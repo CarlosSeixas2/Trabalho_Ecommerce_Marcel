@@ -184,9 +184,9 @@ class _MyAppState extends State<MyApp> {
             children: [
               const DrawerHeader(
                 decoration: BoxDecoration(
-                  color: Colors.blue,
+                  color: Color(0xff09090B),
                 ),
-                child: Text('Opções'),
+                child: Text('Opções', style: TextStyle(color: Colors.white),),
               ),
               ListTile(
                 title: const Text('Equipe'),
@@ -225,9 +225,12 @@ class _MyAppState extends State<MyApp> {
                   alignment: WrapAlignment.start,
                   children: [
                     for (var produto in produtos)
-                      ProductCard(
-                        nome: produto['nome'],
-                        preco: produto['preco'],
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 29.0),
+                        child: ProductCard(
+                          nome: produto['nome'],
+                          preco: produto['preco'],
+                        ),
                       ),
                   ],
                 ),
