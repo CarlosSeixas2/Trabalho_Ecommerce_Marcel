@@ -137,6 +137,9 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        fontFamily: 'Sora'
+      ),
       home: Scaffold(
         backgroundColor: const Color(0xff09090B),
         appBar: AppBar(
@@ -247,7 +250,7 @@ class _MyAppState extends State<MyApp> {
                   ],
                 ),
                 const SizedBox(
-                  height: 22,
+                  height: 15,
                 ),
                 Wrap(
                   alignment: WrapAlignment.start,
@@ -280,11 +283,12 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 115,
-      height: 170,
+      height: 180,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           SizedBox(
-            width: 110,
+            width: 70,
             height: 115,
             child: Image.asset(
               'assets/images/notebook.jpg',
@@ -332,7 +336,7 @@ class CategoryCard extends StatelessWidget {
             style: const TextStyle(
               color: Color(0xffFAFAFA),
               fontSize: 16,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ),
