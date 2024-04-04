@@ -1,7 +1,13 @@
+// ignore_for_file: library_private_types_in_public_api
+
+import 'package:ecommerce_marcel/main.dart';
 import 'package:flutter/material.dart';
 import '../mocks/products.dart';
+import 'package:provider/provider.dart';
 
 class ProductCount extends StatefulWidget {
+  const ProductCount({super.key});
+
   @override
   _ProductCountState createState() => _ProductCountState();
 }
@@ -98,7 +104,7 @@ class SecondPage extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(
-              horizontal: 30,
+              horizontal: 20,
             ),
             child: Row(
               children: [
@@ -111,29 +117,38 @@ class SecondPage extends StatelessWidget {
                     Text(
                       'Apenas ${ProductsMock.getProductById(idProduto)['quantidade']} disponíveis',
                       style: const TextStyle(
-                          fontSize: 14,
+                          fontSize: 12,
                           color: Color(0xff01FC80),
                           fontWeight: FontWeight.w400),
                     ),
                     const SizedBox(
                       height: 5,
                     ),
-                    Text(
-                      '${ProductsMock.getProductById(idProduto)['nome']}',
-                      style: const TextStyle(
-                          fontSize: 26,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500),
-                    ),
+                    SizedBox(
+                        width: MediaQuery.of(context).size.width / 1.2,
+                        child: Text(
+                          '${ProductsMock.getProductById(idProduto)['nome']}',
+                          style: const TextStyle(
+                              fontSize: 24,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500),
+                          textAlign: TextAlign.left,
+                          softWrap: true,
+                        )),
                     const SizedBox(
                       height: 5,
                     ),
-                    Text(
-                      '${ProductsMock.getProductById(idProduto)['descricao']}',
-                      style: const TextStyle(
-                          fontSize: 18,
-                          color: Color(0xffA1A1AA),
-                          fontWeight: FontWeight.w400),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / 1.2,
+                      child: Text(
+                        '${ProductsMock.getProductById(idProduto)['descricao']}',
+                        style: const TextStyle(
+                            fontSize: 18,
+                            color: Color(0xffA1A1AA),
+                            fontWeight: FontWeight.w400),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 3,
+                      ),
                     ),
                     const SizedBox(
                       height: 15,
@@ -152,12 +167,16 @@ class SecondPage extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: BottomBar(),
+      bottomNavigationBar: BottomBar(idProduto: idProduto),
     );
   }
 }
 
 class BottomBar extends StatelessWidget {
+  const BottomBar({super.key, required this.idProduto});
+
+  final int idProduto;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -200,6 +219,10 @@ class BottomBar extends StatelessWidget {
                       ),
                       TextButton(
                         onPressed: () {
+                          context.read<Cart>().addProduct(
+                                ProductsMock.getProductById(idProduto),
+                              );
+
                           Navigator.of(context).pop();
                           print('Compra realizada com sucesso!');
                         },
@@ -222,7 +245,7 @@ class BottomBar extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Comprar',
+                    'Adicionar',
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w600,

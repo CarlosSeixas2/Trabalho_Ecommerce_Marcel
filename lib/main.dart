@@ -1,11 +1,16 @@
-import 'package:flutter/cupertino.dart';
+// ignore_for_file: library_private_types_in_public_api
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
 import 'src/pages/product.dart';
 import 'src/mocks/products.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => Cart(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -159,14 +164,13 @@ class _MyAppState extends State<MyApp> {
                               nome: produto['nome'],
                               preco: produto['preco'],
                             ),
-                          if (produtos.last != produto)
-                            const SizedBox(width: 25),
+                            if (produtos.last != produto)
+                              const SizedBox(width: 25),
                           ],
                         )
                     ],
                   ),
                 ),
-
                 const SizedBox(
                   height: 30,
                 ),
@@ -235,7 +239,8 @@ class _MyAppState extends State<MyApp> {
 }
 
 class ProductCard extends StatelessWidget {
-  const ProductCard({super.key, required this.id, required this.nome, required this.preco});
+  const ProductCard(
+      {super.key, required this.id, required this.nome, required this.preco});
 
   final int id;
   final String nome;
@@ -282,7 +287,6 @@ class ProductCard extends StatelessWidget {
                 const SizedBox(
                   height: 5,
                 ),
-
                 const Text(
                   "Apenas 5 unidades",
                   style: TextStyle(
@@ -291,11 +295,9 @@ class ProductCard extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-
                 const SizedBox(
                   height: 5,
                 ),
-
                 Text(
                   nome,
                   style: const TextStyle(
@@ -304,11 +306,9 @@ class ProductCard extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-
                 const SizedBox(
                   height: 5,
                 ),
-
                 Text(
                   'R\$ ${preco.toStringAsFixed(2).replaceAll('.', ',')}',
                   style: const TextStyle(
@@ -364,5 +364,38 @@ class CategoryCard extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class Cart with ChangeNotifier {
+  final List<Map<String, dynamic>> _items = [];
+
+  List<Map<String, dynamic>> get items => _items;
+
+  void addProduct(Map<String, dynamic> item) {
+    print("Items: $item");
+
+    if (_items.contains(item)) {
+      print("Item já existe no carrinho");
+      _items[_items.indexOf(item)]['quantidade']++;
+    } else {
+      print("Adicionando item ao carrinho");
+      _items.add(item);
+    }
+
+    print(
+        "Items no carrinho: ${_items.map((e) => e['nome'] + ' - ' + e['quantidade'].toString()).toList()}");
+
+    notifyListeners();
+  }
+
+  void removeItem(Map<String, dynamic> item) {
+    _items.remove(item);
+    notifyListeners();
+  }
+
+  void clear() {
+    _items.clear();
+    notifyListeners();
   }
 }
