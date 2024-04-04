@@ -240,6 +240,8 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
+
+
 class ProductCard extends StatelessWidget {
   const ProductCard({super.key, required this.nome, required this.preco});
 
@@ -250,16 +252,16 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 115,
-      height: 150,
+      height: 180,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           SizedBox(
-            width: 80, // Largura desejada
-            height: 115, // Altura desejada
+            width: 70,
+            height: 115,
             child: Image.asset(
               'assets/images/notebook.jpg',
-              fit: BoxFit.cover, // Aplica o efeito de cobertura
+              fit: BoxFit.cover,
             ),
           ),
           Text(nome),
