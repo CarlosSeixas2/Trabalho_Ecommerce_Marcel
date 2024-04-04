@@ -1,12 +1,10 @@
-// ignore_for_file: library_private_types_in_public_api
-
-import 'package:ecommerce_marcel/main.dart';
 import 'package:flutter/material.dart';
 import '../mocks/products.dart';
-import 'package:provider/provider.dart';
 
 class ProductCount extends StatefulWidget {
-  const ProductCount({super.key});
+  final Function(int) onQuantityChanged;
+
+  const ProductCount({super.key, required this.onQuantityChanged});
 
   @override
   _ProductCountState createState() => _ProductCountState();
@@ -18,6 +16,7 @@ class _ProductCountState extends State<ProductCount> {
   void _increment() {
     setState(() {
       _quantity++;
+      widget.onQuantityChanged(_quantity);
     });
   }
 
@@ -25,6 +24,7 @@ class _ProductCountState extends State<ProductCount> {
     setState(() {
       if (_quantity > 1) {
         _quantity--;
+        widget.onQuantityChanged(_quantity);
       }
     });
   }
@@ -51,7 +51,7 @@ class _ProductCountState extends State<ProductCount> {
         IconButton(
           icon: const Icon(Icons.add),
           onPressed: _increment,
-          color: Color(0xff01FC80),
+          color: const Color(0xff01FC80),
         ),
       ],
     );
@@ -92,28 +92,19 @@ class SecondPage extends StatelessWidget {
                     Navigator.pop(context);
                   },
                   icon: const Icon(Icons.arrow_back),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.white),
-                    shape: MaterialStateProperty.all(
-                      const CircleBorder(),
-                    ),
-                  ),
+                  color: Colors.white,
                 ),
               ),
             ],
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(
-                      height: 15,
-                    ),
+                    const SizedBox(height: 15),
                     Text(
                       'Apenas ${ProductsMock.getProductById(idProduto)['quantidade']} disponíveis',
                       style: const TextStyle(
@@ -121,23 +112,20 @@ class SecondPage extends StatelessWidget {
                           color: Color(0xff01FC80),
                           fontWeight: FontWeight.w400),
                     ),
-                    const SizedBox(
-                      height: 5,
-                    ),
+                    const SizedBox(height: 5),
                     SizedBox(
-                        width: MediaQuery.of(context).size.width / 1.2,
-                        child: Text(
-                          '${ProductsMock.getProductById(idProduto)['nome']}',
-                          style: const TextStyle(
-                              fontSize: 24,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500),
-                          textAlign: TextAlign.left,
-                          softWrap: true,
-                        )),
-                    const SizedBox(
-                      height: 5,
+                      width: MediaQuery.of(context).size.width / 1.2,
+                      child: Text(
+                        '${ProductsMock.getProductById(idProduto)['nome']}',
+                        style: const TextStyle(
+                            fontSize: 24,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500),
+                        textAlign: TextAlign.left,
+                        softWrap: true,
+                      ),
                     ),
+                    const SizedBox(height: 5),
                     SizedBox(
                       width: MediaQuery.of(context).size.width / 1.2,
                       child: Text(
@@ -150,9 +138,7 @@ class SecondPage extends StatelessWidget {
                         maxLines: 3,
                       ),
                     ),
-                    const SizedBox(
-                      height: 15,
-                    ),
+                    const SizedBox(height: 15),
                     Text(
                       'R\$ ${ProductsMock.getProductById(idProduto)['preco'].toStringAsFixed(2).replaceAll('.', ',')}',
                       style: const TextStyle(
@@ -167,18 +153,42 @@ class SecondPage extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: BottomBar(idProduto: idProduto),
+      bottomNavigationBar: _BottomBar(idProduto: idProduto),
     );
   }
 }
 
-class BottomBar extends StatelessWidget {
-  const BottomBar({super.key, required this.idProduto});
-
+class _BottomBar extends StatefulWidget {
   final int idProduto;
+
+  const _BottomBar({required this.idProduto});
+
+  @override
+  __BottomBarState createState() => __BottomBarState(idProduto: idProduto);
+}
+
+class __BottomBarState extends State<_BottomBar> {
+  late int _quantity;
+  final int idProduto;
+
+  __BottomBarState({required this.idProduto});
+
+  @override
+  void initState() {
+    super.initState();
+    _quantity = 1;
+  }
+
+  void _updateQuantity(int newQuantity) {
+    setState(() {
+      _quantity = newQuantity;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    num totalPrice = _quantity * ProductsMock.getProductById(idProduto)['preco'];
+
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -200,33 +210,33 @@ class BottomBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          ProductCount(), // Adiciona o widget de contagem de produtos
+          ProductCount(
+            onQuantityChanged: _updateQuantity,
+          ),
           GestureDetector(
             onTap: () {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: Text('Confirmação de Compra'),
-                    content: Text('Deseja confirmar a compra?'),
+                    title: const Text('Confirmação de Compra'),
+                    content: const Text('Deseja confirmar a compra?'),
                     actions: [
                       TextButton(
                         onPressed: () {
                           Navigator.of(context).pop();
                           print('Compra cancelada!');
                         },
-                        child: Text('Cancelar'),
+                        child: const Text('Cancelar'),
                       ),
                       TextButton(
                         onPressed: () {
-                          context.read<Cart>().addProduct(
-                                ProductsMock.getProductById(idProduto),
-                              );
-
+                          // Simulação de adicionar produto ao carrinho
+                          print('Adicionado ao carrinho: ${ProductsMock.getProductById(idProduto)['nome']}');
                           Navigator.of(context).pop();
                           print('Compra realizada com sucesso!');
                         },
-                        child: const Text('Confirmar'),
+                        child: Text('Adicionar R\$ $totalPrice'),
                       ),
                     ],
                   );
@@ -240,11 +250,11 @@ class BottomBar extends StatelessWidget {
                 color: const Color(0xff01FC80),
                 borderRadius: BorderRadius.circular(5),
               ),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     'Adicionar',
                     style: TextStyle(
                       fontSize: 15,
@@ -252,8 +262,8 @@ class BottomBar extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    ' R\$ 999,99',
-                    style: TextStyle(
+                    'R\$ $totalPrice',
+                    style: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
                     ),
