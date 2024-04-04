@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import "package:ecommerce_marcel/pages/SecondPage.dart";
 
 void main() {
   runApp(const MyApp());
@@ -272,7 +273,6 @@ class _MyAppState extends State<MyApp> {
 }
 
 
-
 class ProductCard extends StatelessWidget {
   const ProductCard({super.key, required this.nome, required this.preco});
 
@@ -283,20 +283,30 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 115,
-      height: 170,
-      child: Column(
-        children: [
-          SizedBox(
-            width: 110,
-            height: 115,
-            child: Image.asset(
-              'assets/images/notebook.jpg',
-              fit: BoxFit.cover,
+      height: 210,
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SecondPage(),
             ),
-          ),
-          Text(nome),
-          Text('R\$ ${preco.toStringAsFixed(2)}'),
-        ],
+          );
+        },
+        child: Column(
+          children: [
+            SizedBox(
+              width: 110,
+              height: 115,
+              child: Image.asset(
+                'assets/images/notebook.jpg',
+                fit: BoxFit.cover,
+              ),
+            ),
+            Text(nome),
+            Text('R\$ ${preco.toStringAsFixed(2)}'),
+          ],
+        ),
       ),
     );
   }
