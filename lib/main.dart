@@ -138,6 +138,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        backgroundColor: const Color(0xff09090B),
         appBar: AppBar(
           toolbarHeight: 90,
           title: Image.asset(
@@ -162,10 +163,19 @@ class _MyAppState extends State<MyApp> {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10),
+              border: Border(
+                bottom: BorderSide(
+                  color: Color(0xff27272A),
+                  width: 1,
+                ),
               ),
+              boxShadow: [
+                BoxShadow(
+                  color: Color(0xff000000),
+                  offset: Offset(0, 1),
+                  blurRadius: 10,
+                ),
+              ],
             ),
           ),
 
@@ -203,7 +213,25 @@ class _MyAppState extends State<MyApp> {
             child: Column(
               children: [
                 const SizedBox(
-                  height: 22,
+                  height: 15,
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.all(15),
+                  child: Row(
+                    children: [
+                      for (var categoria in ['Periféricos', 'Espaço Gamer', 'Hardware', 'Computadores'])
+                        Row(
+                          children: [
+                            CategoryCard(nome: categoria),
+                            const SizedBox(width: 15),
+                          ],
+                        ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 30,
                 ),
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -267,6 +295,48 @@ class ProductCard extends StatelessWidget {
           Text(nome),
           Text('R\$ ${preco.toStringAsFixed(2)}'),
         ],
+      ),
+    );
+  }
+}
+
+class CategoryCard extends StatelessWidget {
+  const CategoryCard({super.key, required this.nome});
+
+  final String nome;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: nome.length * 10 + 10,
+      height: 40,
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [
+              Color(0xff09090B),
+              Color(0xff001008),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          border: Border.all(
+            color: const Color(0xff27272A),
+            width: 1,
+          ),
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: Center(
+          child: Text(
+            nome,
+
+            style: const TextStyle(
+              color: Color(0xffFAFAFA),
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
       ),
     );
   }
