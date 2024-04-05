@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spark_informatica/src/cart/application/cart.dart';
-import 'package:spark_informatica/src/catalog/presentation/widgets/category_card.dart';
+import 'package:spark_informatica/src/cart/presentation/pages/cart_page.dart';
 import 'package:spark_informatica/src/catalog/presentation/widgets/product_card.dart';
 import 'package:spark_informatica/src/catalog/presentation/widgets/bottom_bar.dart';
 import 'package:spark_informatica/src/product/domain/product_repo.dart';
+import 'package:spark_informatica/src/project/presentation/details_project_page.dart';
 
 class CatalogPage extends StatefulWidget {
   const CatalogPage({super.key});
 
   @override
-  _CatalogPageState createState() => _CatalogPageState();
+  CatalogPageState createState() => CatalogPageState();
 }
 
-class _CatalogPageState extends State<CatalogPage> {
+class CatalogPageState extends State<CatalogPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -60,18 +61,100 @@ class _CatalogPageState extends State<CatalogPage> {
             width: 250,
             child: Container(
               color: const Color(0xff09090B),
-              child: const Column(
+              child: Column(
                 children: [
-                  SizedBox(
-                    height: 50,
+                  const SizedBox(
+                    height: 80,
                   ),
-                  Image(
+                  const Image(
                     image: AssetImage('assets/images/logo.png'),
                     height: 30,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 50,
                   ),
+                  Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: TextButton(
+                        onPressed: () {},
+                        child: const Row(
+                          children: [
+                            Icon(
+                              Icons.home,
+                              color: Color(0xffFAFAFA),
+                            ),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Text(
+                              'Início',
+                              style: TextStyle(
+                                  color: Color(0xffFAFAFA), fontSize: 16),
+                            ),
+                          ],
+                        ),
+                      )),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const CartPage()),
+                          );
+                        },
+                        child: const Row(
+                          children: [
+                            Icon(
+                              Icons.shopping_cart,
+                              color: Color(0xffFAFAFA),
+                            ),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Text(
+                              'Carrinho',
+                              style: TextStyle(
+                                  color: Color(0xffFAFAFA), fontSize: 16),
+                            ),
+                          ],
+                        ),
+                      )),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const DetailsProjectPage(),
+                            ),
+                          );
+                        },
+                        child: const Row(
+                          children: [
+                            Icon(
+                              Icons.info_outline,
+                              color: Color(0xffFAFAFA),
+                            ),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Text(
+                              'Sobre nós',
+                              style: TextStyle(
+                                  color: Color(0xffFAFAFA), fontSize: 16),
+                            ),
+                          ],
+                        ),
+                      )),
                 ],
               ),
             ),
@@ -81,29 +164,6 @@ class _CatalogPageState extends State<CatalogPage> {
           child: Center(
             child: Column(
               children: [
-                const SizedBox(
-                  height: 30,
-                ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Row(
-                    children: [
-                      for (var categoria in [
-                        'Periféricos',
-                        'Espaço Gamer',
-                        'Hardware',
-                        'Computadores'
-                      ])
-                        Row(
-                          children: [
-                            CategoryCard(nome: categoria),
-                            const SizedBox(width: 15),
-                          ],
-                        ),
-                    ],
-                  ),
-                ),
                 const SizedBox(
                   height: 30,
                 ),
@@ -120,14 +180,6 @@ class _CatalogPageState extends State<CatalogPage> {
                           fontSize: 26,
                           fontWeight: FontWeight.w500,
                           color: Color(0xffFAFAFA),
-                        ),
-                      ),
-                      Text(
-                        'Ver todos',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xff01FC80),
                         ),
                       ),
                     ],
@@ -165,32 +217,19 @@ class _CatalogPageState extends State<CatalogPage> {
                 const SizedBox(
                   height: 30,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
+                const Padding(
+                  padding: EdgeInsets.symmetric(
                     horizontal: 15,
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
+                      Text(
                         'Periféricos',
                         style: TextStyle(
                           fontSize: 26,
                           fontWeight: FontWeight.w500,
                           color: Color(0xffFAFAFA),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          print('Ver todos os periféricos');
-                        },
-                        child: const Text(
-                          'Ver todos',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xff01FC80),
-                          ),
                         ),
                       ),
                     ],
