@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'src/pages/product.dart';
 import 'src/mocks/products.dart';
+import "src/pages/details_project.dart";
 
 void main() {
   runApp(
@@ -82,11 +83,16 @@ class _MyAppState extends State<MyApp> {
                 ),
                 child: Text('Opções'),
               ),
-              ListTile(
-                title: const Text('Equipe'),
-                onTap: () {
-                  print('Dados da Equipe');
-                },
+              Builder(
+                builder: (context) => ListTile(
+                  title: const Text('Equipe'),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DetailsProjectPage()));
+                  },
+                ),
               ),
             ],
           ),
