@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'src/pages/product.dart';
 import 'src/mocks/products.dart';
 import "src/pages/details_project.dart";
+import 'src/pages/cart.dart';
 
 void main() {
   runApp(
@@ -427,7 +428,7 @@ class Cart with ChangeNotifier {
 }
 
 class _BottomBar extends StatefulWidget {
-  const _BottomBar({super.key});
+  const _BottomBar();
 
   @override
   __BottomBarState createState() => __BottomBarState();
@@ -437,7 +438,7 @@ class __BottomBarState extends State<_BottomBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 90,
+      height: 80,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: [Color(0xff09090B), Color(0xff001008)],
@@ -459,33 +460,69 @@ class __BottomBarState extends State<_BottomBar> {
         ],
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    'R\$ ${context.watch<Cart>().items.fold(0.0, (previousValue, element) => previousValue + element['preco'] * element['quantidade']).toStringAsFixed(2).replaceAll('.', ',')}',
-                    style: const TextStyle(
-                      color: Color(0xffFAFAFA),
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Text(
-                    '${context.watch<Cart>().getQuantity()} itens',
-                    style: const TextStyle(
-                      color: Color(0xffA1A1AA),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
+              const SizedBox(
+                width: 15,
+              ),
+              Text(
+                'R\$ ${context.watch<Cart>().items.fold(0.0, (previousValue, element) => previousValue + element['preco'] * element['quantidade']).toStringAsFixed(2).replaceAll('.', ',')}',
+                style: const TextStyle(
+                  color: Color(0xffFAFAFA),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              Text(
+                ' / ${context.watch<Cart>().getQuantity()} itens',
+                style: const TextStyle(
+                  color: Color(0xffA1A1AA),
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ],
           ),
+          Row(children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CartPage(),
+                  ),
+                );
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width / 2,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                decoration: BoxDecoration(
+                  color: const Color(0xff01FC80),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Ver carrinho',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(
+              width: 15,
+            ),
+          ]),
         ],
       ),
     );
