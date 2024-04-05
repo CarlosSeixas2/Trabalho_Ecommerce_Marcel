@@ -3,16 +3,27 @@ import 'package:spark_informatica/src/product/domain/product_repo.dart';
 import 'package:spark_informatica/src/product/presentation/pages/product_page.dart';
 
 class ProductCard extends StatelessWidget {
-  const ProductCard(
-      {super.key, required this.id, required this.nome, required this.preco});
+  const ProductCard({
+    Key? key,
+    required this.id,
+    required this.nome,
+    required this.preco,
+    required this.onDelete,
+  }) : super(key: key);
 
   final int id;
   final String nome;
   final double preco;
+  final VoidCallback onDelete;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    final bool isDeleted =
+    produtos.firstWhere((produto) => produto['id'] == id)['deletado'];
+
+    return isDeleted
+        ? SizedBox.shrink()
+        : SizedBox(
       width: 140,
       child: GestureDetector(
         onTap: () {
@@ -29,19 +40,40 @@ class ProductCard extends StatelessWidget {
             SizedBox(
               width: 140,
               height: 140,
-              child: Container(
-                decoration: BoxDecoration(
-                  image: const DecorationImage(
-                    image: AssetImage('assets/images/notebook.jpg'),
-                    fit: BoxFit.cover,
+              child: Stack(children: [
+                Container(
+                  decoration: BoxDecoration(
+                    image: const DecorationImage(
+                      image: AssetImage('assets/images/notebook.jpg'),
+                      fit: BoxFit.cover,
+                    ),
+                    border: Border.all(
+                      color: const Color(0xff27272A),
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  border: Border.all(
-                    color: const Color(0xff27272A),
-                    width: 1,
-                  ),
-                  borderRadius: BorderRadius.circular(10),
                 ),
-              ),
+                Positioned(
+                  top: 5.0,
+                  right: 5.0,
+                  child: IconButton(
+                    onPressed: onDelete,
+                    iconSize: 20,
+                    icon: const Icon(Icons.delete),
+                    color: Colors.white,
+                    style: ButtonStyle(
+                      backgroundColor:
+                      MaterialStateProperty.all(Colors.red),
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ]),
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
