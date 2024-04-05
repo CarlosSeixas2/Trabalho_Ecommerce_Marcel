@@ -1,23 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../main.dart';
 import '../mocks/products.dart';
 
 class ProductCount extends StatefulWidget {
   final Function(int) onQuantityChanged;
+  final int idProduct;
 
-  const ProductCount({super.key, required this.onQuantityChanged});
+  const ProductCount(
+      {super.key, required this.onQuantityChanged, required this.idProduct});
 
   @override
-  _ProductCountState createState() => _ProductCountState();
+  _ProductCountState createState() => _ProductCountState(idProduct: idProduct);
 }
 
 class _ProductCountState extends State<ProductCount> {
   int _quantity = 1;
+  late int idProduct;
+
+  _ProductCountState({required this.idProduct});
 
   void _increment() {
-    setState(() {
-      _quantity++;
-      widget.onQuantityChanged(_quantity);
-    });
+    if (_quantity < ProductsMock.getProductById(idProduct)['quantidade']) {
+      setState(() {
+        _quantity++;
+        widget.onQuantityChanged(_quantity);
+      });
+    }
   }
 
   void _decrement() {
@@ -51,7 +60,10 @@ class _ProductCountState extends State<ProductCount> {
         IconButton(
           icon: const Icon(Icons.add),
           onPressed: _increment,
-          color: const Color(0xff01FC80),
+          color:
+              _quantity < ProductsMock.getProductById(idProduct)['quantidade']
+                  ? const Color(0xff01FC80)
+                  : const Color(0xffA1A1AA),
         ),
       ],
     );
@@ -92,7 +104,13 @@ class SecondPage extends StatelessWidget {
                     Navigator.pop(context);
                   },
                   icon: const Icon(Icons.arrow_back),
-                  color: Colors.white,
+                  color: Colors.black,
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.white),
+                    shape: MaterialStateProperty.all(
+                      const CircleBorder(),
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -187,7 +205,8 @@ class __BottomBarState extends State<_BottomBar> {
 
   @override
   Widget build(BuildContext context) {
-    num totalPrice = _quantity * ProductsMock.getProductById(idProduto)['preco'];
+    num totalPrice =
+        _quantity * ProductsMock.getProductById(idProduto)['preco'];
 
     return Container(
       decoration: const BoxDecoration(
@@ -212,6 +231,7 @@ class __BottomBarState extends State<_BottomBar> {
         children: [
           ProductCount(
             onQuantityChanged: _updateQuantity,
+            idProduct: idProduto,
           ),
           GestureDetector(
             onTap: () {
@@ -219,24 +239,31 @@ class __BottomBarState extends State<_BottomBar> {
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: const Text('Confirmação de Compra'),
-                    content: const Text('Deseja confirmar a compra?'),
+                    title: const Text('Adicionar ao carrinho'),
+                    content: const Text(
+                        'Deseja adicionar este produto ao carrinho?'),
                     actions: [
                       TextButton(
                         onPressed: () {
                           Navigator.of(context).pop();
-                          print('Compra cancelada!');
                         },
                         child: const Text('Cancelar'),
                       ),
                       TextButton(
                         onPressed: () {
-                          // Simulação de adicionar produto ao carrinho
-                          print('Adicionado ao carrinho: ${ProductsMock.getProductById(idProduto)['nome']}');
+                          context.read<Cart>().addProduct({
+                            'id': ProductsMock.getProductById(idProduto)['id'],
+                            'nome':
+                                ProductsMock.getProductById(idProduto)['nome'],
+                            'descricao': ProductsMock.getProductById(
+                                idProduto)['descricao'],
+                            'preco':
+                                ProductsMock.getProductById(idProduto)['preco'],
+                            'quantidade': _quantity,
+                          });
                           Navigator.of(context).pop();
-                          print('Compra realizada com sucesso!');
                         },
-                        child: Text('Adicionar R\$ $totalPrice'),
+                        child: const Text('Adicionar'),
                       ),
                     ],
                   );
@@ -262,7 +289,7 @@ class __BottomBarState extends State<_BottomBar> {
                     ),
                   ),
                   Text(
-                    'R\$ $totalPrice',
+                    'R\$ ${totalPrice.toStringAsFixed(2).replaceAll('.', ',')}',
                     style: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w500,

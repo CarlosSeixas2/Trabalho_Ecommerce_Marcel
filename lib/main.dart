@@ -90,7 +90,7 @@ class _MyAppState extends State<MyApp> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => DetailsProjectPage()));
+                            builder: (context) => const DetailsProjectPage()));
                   },
                 ),
               ),
@@ -293,22 +293,22 @@ class ProductCard extends StatelessWidget {
                 const SizedBox(
                   height: 5,
                 ),
-                const Text(
-                  "Apenas 5 unidades",
-                  style: TextStyle(
-                    color: Color(0xffA1A1AA),
-                    fontSize: 8,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
                 Text(
                   nome,
                   style: const TextStyle(
                     color: Color(0xffFAFAFA),
-                    fontSize: 18,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(
+                  height: 3,
+                ),
+                Text(
+                  '${produtos.firstWhere((element) => element['id'] == id)['quantidade']} unidades',
+                  style: const TextStyle(
+                    color: Color(0xffA1A1AA),
+                    fontSize: 12,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -379,13 +379,16 @@ class Cart with ChangeNotifier {
   List<Map<String, dynamic>> get items => _items;
 
   void addProduct(Map<String, dynamic> item) {
-    print("Items: $item");
+    int itemId = item['id'];
 
-    if (_items.contains(item)) {
-      print("Item já existe no carrinho");
-      _items[_items.indexOf(item)]['quantidade']++;
+    String itemIdString = itemId.toString();
+
+    int existingIndex = _items
+        .indexWhere((element) => element['id'].toString() == itemIdString);
+
+    if (existingIndex != -1) {
+      _items[existingIndex]['quantidade'] += item['quantidade'];
     } else {
-      print("Adicionando item ao carrinho");
       _items.add(item);
     }
 
