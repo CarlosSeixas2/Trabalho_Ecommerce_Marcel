@@ -1,4 +1,4 @@
-package dev.cafezinho.ecommerce_marcel
+package dev.cafezinho.spark_informatica
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../main.dart';
-import './product.dart';
+import 'package:spark_informatica/src/cart/application/cart.dart';
+import 'package:spark_informatica/src/product/presentation/pages/product_page.dart';
 
 class CartPage extends StatelessWidget {
+  const CartPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<Cart>(context);
@@ -39,7 +41,7 @@ class CartPage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SecondPage(
+                            builder: (context) => ProductPage(
                               idProduto: cart.items[index]['id'],
                             ),
                           ),
