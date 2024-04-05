@@ -80,7 +80,8 @@ class SecondPage extends StatelessWidget {
     return Scaffold(
       appBar: null,
       backgroundColor: const Color(0xff09090B),
-      body: Column(
+      body: SingleChildScrollView(
+          child: Column(
         children: [
           Stack(
             children: [
@@ -170,7 +171,7 @@ class SecondPage extends StatelessWidget {
             ),
           ),
         ],
-      ),
+      )),
       bottomNavigationBar: _BottomBar(idProduto: idProduto),
     );
   }
@@ -261,7 +262,8 @@ class __BottomBarState extends State<_BottomBar> {
                                 ProductsMock.getProductById(idProduto)['preco'],
                             'quantidade': _quantity,
                           });
-                          Navigator.of(context).pop();
+
+                          Navigator.pop(context);
                         },
                         child: const Text('Adicionar'),
                       ),

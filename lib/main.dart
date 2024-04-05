@@ -1,4 +1,3 @@
-// ignore_for_file: library_private_types_in_public_api
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'src/pages/product.dart';
@@ -29,177 +28,121 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       theme: ThemeData(fontFamily: 'Sora'),
       home: Scaffold(
-        backgroundColor: const Color(0xff09090B),
-        appBar: AppBar(
-          toolbarHeight: 90,
-          title: Image.asset(
-            'assets/images/logo.png',
-            fit: BoxFit.cover,
-            height: 35,
-          ),
-          centerTitle: true,
-          iconTheme: const IconThemeData(
-            color: Color(0xffFAFAFA),
-          ),
-          backgroundColor: Colors.transparent,
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xff09090B), Color(0xff001008)],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              border: Border(
-                bottom: BorderSide(
-                  color: Color(0xff27272A),
-                  width: 1,
+          backgroundColor: const Color(0xff09090B),
+          appBar: AppBar(
+            toolbarHeight: 90,
+            title: Image.asset(
+              'assets/images/logo.png',
+              fit: BoxFit.cover,
+              height: 35,
+            ),
+            centerTitle: true,
+            iconTheme: const IconThemeData(
+              color: Color(0xffFAFAFA),
+            ),
+            backgroundColor: Colors.transparent,
+            flexibleSpace: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0xff09090B), Color(0xff001008)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
+                border: Border(
+                  bottom: BorderSide(
+                    color: Color(0xff27272A),
+                    width: 1,
+                  ),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0xff000000),
+                    offset: Offset(0, 1),
+                    blurRadius: 10,
+                  ),
+                ],
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: Color(0xff000000),
-                  offset: Offset(0, 1),
-                  blurRadius: 10,
+            ),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  print('Pesquisar');
+                },
+                icon: const Icon(Icons.search),
+              ),
+            ],
+          ),
+          drawer: Drawer(
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: [
+                const DrawerHeader(
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                  ),
+                  child: Text('Opções'),
+                ),
+                Builder(
+                  builder: (context) => ListTile(
+                    title: const Text('Equipe'),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const DetailsProjectPage()));
+                    },
+                  ),
                 ),
               ],
             ),
           ),
-          actions: [
-            IconButton(
-              onPressed: () {
-                print('Pesquisar');
-              },
-              icon: const Icon(Icons.search),
-            ),
-          ],
-        ),
-        drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              const DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                ),
-                child: Text('Opções'),
-              ),
-              Builder(
-                builder: (context) => ListTile(
-                  title: const Text('Equipe'),
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const DetailsProjectPage()));
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-        body: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 30,
-                ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Row(
-                    children: [
-                      for (var categoria in [
-                        'Periféricos',
-                        'Espaço Gamer',
-                        'Hardware',
-                        'Computadores'
-                      ])
-                        Row(
-                          children: [
-                            CategoryCard(nome: categoria),
-                            const SizedBox(width: 15),
-                          ],
+          body: SingleChildScrollView(
+            child: Center(
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Row(
+                      children: [
+                        for (var categoria in [
+                          'Periféricos',
+                          'Espaço Gamer',
+                          'Hardware',
+                          'Computadores'
+                        ])
+                          Row(
+                            children: [
+                              CategoryCard(nome: categoria),
+                              const SizedBox(width: 15),
+                            ],
+                          ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 15,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Recomendados',
+                          style: TextStyle(
+                            fontSize: 26,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xffFAFAFA),
+                          ),
                         ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 15,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Recomendados',
-                        style: TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xffFAFAFA),
-                        ),
-                      ),
-                      Text(
-                        'Ver todos',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xff01FC80),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      for (var produto in produtos)
-                        Row(
-                          children: [
-                            ProductCard(
-                              id: produto['id'],
-                              nome: produto['nome'],
-                              preco: produto['preco'],
-                            ),
-                            if (produtos.last != produto)
-                              const SizedBox(width: 25),
-                          ],
-                        )
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 15,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Periféricos',
-                        style: TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xffFAFAFA),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          print('Ver todos os periféricos');
-                        },
-                        child: const Text(
+                        Text(
                           'Ver todos',
                           style: TextStyle(
                             fontSize: 16,
@@ -207,39 +150,104 @@ class _MyAppState extends State<MyApp> {
                             color: Color(0xff01FC80),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      for (var produto in produtos)
-                        Row(
-                          children: [
-                            ProductCard(
-                              id: produto['id'],
-                              nome: produto['nome'],
-                              preco: produto['preco'],
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        for (var produto in produtos)
+                          Row(
+                            children: [
+                              ProductCard(
+                                id: produto['id'],
+                                nome: produto['nome'],
+                                preco: produto['preco'],
+                              ),
+                              if (produtos.last != produto)
+                                const SizedBox(width: 25),
+                            ],
+                          )
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 15,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Periféricos',
+                          style: TextStyle(
+                            fontSize: 26,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xffFAFAFA),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            print('Ver todos os periféricos');
+                          },
+                          child: const Text(
+                            'Ver todos',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xff01FC80),
                             ),
-                            if (produtos.last != produto)
-                              const SizedBox(width: 25),
-                          ],
-                        )
-                    ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        for (var produto in produtos)
+                          Row(
+                            children: [
+                              ProductCard(
+                                id: produto['id'],
+                                nome: produto['nome'],
+                                preco: produto['preco'],
+                              ),
+                              if (produtos.last != produto)
+                                const SizedBox(width: 25),
+                            ],
+                          )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      ),
+          bottomNavigationBar: Consumer<Cart>(
+            builder: (context, cart, child) {
+              if (cart.items.isNotEmpty) {
+                return const _BottomBar();
+              } else {
+                return const SizedBox.shrink();
+              }
+            },
+          )),
     );
   }
 }
@@ -403,8 +411,83 @@ class Cart with ChangeNotifier {
     notifyListeners();
   }
 
+  int getQuantity() {
+    int totalQuantity = _items.fold(
+        0,
+        (previousValue, element) =>
+            previousValue + element['quantidade'] as int);
+
+    return totalQuantity;
+  }
+
   void clear() {
     _items.clear();
     notifyListeners();
+  }
+}
+
+class _BottomBar extends StatefulWidget {
+  const _BottomBar({super.key});
+
+  @override
+  __BottomBarState createState() => __BottomBarState();
+}
+
+class __BottomBarState extends State<_BottomBar> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 90,
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Color(0xff09090B), Color(0xff001008)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        border: Border(
+          top: BorderSide(
+            color: Color(0xff27272A),
+            width: 1,
+          ),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Color(0xff000000),
+            offset: Offset(0, -1),
+            blurRadius: 10,
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Row(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    'R\$ ${context.watch<Cart>().items.fold(0.0, (previousValue, element) => previousValue + element['preco'] * element['quantidade']).toStringAsFixed(2).replaceAll('.', ',')}',
+                    style: const TextStyle(
+                      color: Color(0xffFAFAFA),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Text(
+                    '${context.watch<Cart>().getQuantity()} itens',
+                    style: const TextStyle(
+                      color: Color(0xffA1A1AA),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
