@@ -5,7 +5,6 @@ import 'package:spark_informatica/src/catalog/presentation/widgets/category_card
 import 'package:spark_informatica/src/catalog/presentation/widgets/product_card.dart';
 import 'package:spark_informatica/src/catalog/presentation/widgets/bottom_bar.dart';
 import 'package:spark_informatica/src/product/domain/product_repo.dart';
-import 'package:spark_informatica/src/project/presentation/details_project_page.dart';
 
 class CatalogPage extends StatelessWidget {
   const CatalogPage({super.key});
@@ -52,28 +51,25 @@ class CatalogPage extends StatelessWidget {
             ),
           ),
           drawer: Drawer(
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: [
-                const DrawerHeader(
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                  ),
-                  child: Text('Opções'),
+            child: SizedBox(
+              width: 250,
+              child: Container(
+                color: const Color(0xff09090B),
+                child: const Column(
+                  children: [
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Image(
+                      image: AssetImage('assets/images/logo.png'),
+                      height: 30,
+                    ),
+                    SizedBox(
+                      height: 50,
+                    ),
+                  ],
                 ),
-                Builder(
-                  builder: (context) => ListTile(
-                    title: const Text('Equipe'),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const DetailsProjectPage()));
-                    },
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
           body: SingleChildScrollView(
